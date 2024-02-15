@@ -1,0 +1,51 @@
+name: 'Auto deploy SAP manual to GitHub pages'
+
+on:
+  push:
+    branches:
+      - main
+env:
+  NODE_VERSION: 16.x
+  DOCS_FOLDER: /
+  DOCS_VERSION_PATH: /
+  GITHUB_TOKEN: ${{secrets.GH_PAT}}
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check if source event was 'release'
+        uses: haya14busa/action-cond@v1
+        id: is-release
+        with:
+          cond: ${{ startsWith(github.event.inputs.tag, 'v') }}
+          if_true: 'true'
+          if_false: 'false'
+
+      - name: Update DOCS_VERSION_PATH
+        if: ${{ steps.is-release.outputs.value == 'true' }}
+        run: echo DOCS_VERSION_PATH=/version/$(echo $GITHUB_REF | cut -d / -f 3 | cut -d v -f 2- | cut -d . -f 1,2)/ >> $GITHUB_ENV
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install and rebuild user manual
+        run: |
+          npm install &&
+          npm run docs:build
+
+      - name: Deploy user manual 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: docs/.vuepress/dist
+          target-folder: ${{ env.DOCS_VERSION_PATH }}
+          clean: true
+          clean-exclude: version
