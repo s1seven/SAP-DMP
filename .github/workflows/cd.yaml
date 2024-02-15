@@ -8,7 +8,7 @@ env:
   NODE_VERSION: 16.x
   DOCS_FOLDER: /
   DOCS_VERSION_PATH: /
-  GITHUB_TOKEN: ${{secrets.GH_PAT}}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   pages:
