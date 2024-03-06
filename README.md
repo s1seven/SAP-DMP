@@ -2,9 +2,9 @@
   <img src="logo.png">
 </p>
 
-# S1SEVEN SAP Manual
+# S1SEVEN SAP Digital Material Passport
 
-This repository contains the SAP Manual for the S1SEVEN ecosystem.
+This repository contains the documentation on the S1SEVEN SAP Digital Material Passport (DMP) Add.On.
 
 # Adding content
 
@@ -14,13 +14,13 @@ To add content, add a folder to `content`, then add the content in markdown form
 
 ## Section Titles
 
-Use title case and imperative mood for section titles. For example, use "Create a Wallet" instead of "Creating a Wallet" or "How to Create a Wallet".
+Use title case and imperative mood for section titles. For example, use "Create a User" instead of "Creating a User" or "How to Create a User".
 
 ## Application Screenshots
 
-Screenshots from the S1SEVEN platform should be taken from the `en` locale, and should be taken from a 1000x618 screen. Use the built-in screenshot tool in your browser to take the screenshots.
+Screenshots should be taken from the `en` locale, and should be taken from a 1000x618 screen. Use the built-in screenshot tool in your browser to take the screenshots.
 
-Before taking the screenshot, enable demo mode by pressing Ctrl+Shift+D.
+Before taking the screenshot in browsers, enable demo mode by pressing Ctrl+Shift+D.
 
 # Repo sync
 

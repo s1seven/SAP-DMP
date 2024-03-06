@@ -1,8 +1,8 @@
 {
-  "name": "sap-manual",
-  "author": "s1seven",
+  "name": "sap-dmp",
+  "author": "S1SEVEN",
   "version": "0.0.0",
-  "description": "S1SEVEN SAP Manual",
+  "description": "S1SEVEN SAP DMP Documentation",
   "main": "index.js",
   "scripts": {
     "docs:compose": "node ./compose.js",
@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/s1seven/SAP-manual.git"
+    "url": "https://github.com/s1seven/SAP-DMP.git"
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/s1seven/SAP-manual/issues"
+    "url": "https://github.com/s1seven/SAP-DMP/issues"
   },
-  "homepage": "https://github.com/s1seven/SAP-manual#readme",
+  "homepage": "https://github.com/s1seven/SAP-DMP#readme",
   "devDependencies": {
     "@types/swagger-ui-dist": "^3.30.4",
     "@vuepress/plugin-search": "2.0.0-rc.0",
