@@ -1,4 +1,4 @@
-name: 'Auto deploy SAP manual to GitHub pages'
+name: 'Auto deploy S1SEVEN SAP DMP Documentation to GitHub pages'
 
 on:
   push:

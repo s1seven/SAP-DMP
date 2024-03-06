@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Install and rebuild SAP manual
+      - name: Install and rebuild S1SEVEN SAP DMP documentation
         run: |
           npm install &&
           npm run docs:build
