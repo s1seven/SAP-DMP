@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, isAxiosError } from 'axios';
 import pkg from '../package.json';
 import { packageName } from './constants';
 
@@ -26,6 +26,7 @@ const axiosBaseConfig = ({ githubToken }): AxiosRequestConfig => ({
 async function getGithubPagesTree(): Promise<GithubTreeItem[]> {
   hasGithubToken();
   const url = `https://api.github.com/repos/${pkg.author}/${packageName}/git/trees/gh-pages`;
+  console.log('url', url);
   const { data } = await axios<{ tree: GithubTreeItem[] }>({
     ...axiosBaseConfig({ githubToken: process.env.GITHUB_TOKEN }),
     method: 'get',
@@ -34,9 +35,7 @@ async function getGithubPagesTree(): Promise<GithubTreeItem[]> {
   return data.tree;
 }
 
-async function getGithubPagesVersionFolderTree(
-  tree: GithubTreeItem[]
-): Promise<GithubTreeItem[]> {
+async function getGithubPagesVersionFolderTree(tree: GithubTreeItem[]): Promise<GithubTreeItem[]> {
   hasGithubToken();
   const versionNode = tree.find((e) => e.path.toLowerCase() === 'version');
   const { data } = await axios<{ tree: GithubTreeItem[] }>({
@@ -57,8 +56,7 @@ function getOptionsFromTree(tree: GithubTreeItem[]): VersionsOptions {
         const e1V = parseInt(e1Arr[i]);
         const e2V = parseInt(e2Arr[i]);
         if (e1V !== e2V) return e2V - e1V;
-        if (e1Arr[i] !== e2Arr[i])
-          return parseInt(e2Arr[i]) - parseInt(e1Arr[i]);
+        if (e1Arr[i] !== e2Arr[i]) return parseInt(e2Arr[i]) - parseInt(e1Arr[i]);
       }
       return e1.text === e2.text ? 0 : e2.text < e1.text ? -1 : 1;
     });
@@ -67,7 +65,15 @@ function getOptionsFromTree(tree: GithubTreeItem[]): VersionsOptions {
 }
 
 export async function getVersions(): Promise<VersionsOptions> {
-  const tree = await getGithubPagesTree();
-  const versionFolderTree = await getGithubPagesVersionFolderTree(tree);
-  return getOptionsFromTree(versionFolderTree);
+  try {
+    const tree = await getGithubPagesTree();
+    const versionFolderTree = await getGithubPagesVersionFolderTree(tree);
+    return getOptionsFromTree(versionFolderTree);
+  } catch (error) {
+    if (isAxiosError(error)) {
+      console.error('Error getting versions', error.response?.data);
+    } else {
+      console.error('Error getting versions', error);
+    }
+  }
 }
