@@ -37,7 +37,7 @@ jobs:
         with:
           token: ${{ env.GITHUB_TOKEN }}
           branch: gh-pages
-          folder: ${{ env.DOCS_FOLDER }}/.vuepress/dist
+          folder: docs/.vuepress/dist
           target-folder: ${{ env.DOCS_VERSION_PATH }}
           clean: true
           clean-exclude: |
