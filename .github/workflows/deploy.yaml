@@ -33,7 +33,7 @@ jobs:
           npm run docs:build
 
       - name: Deploy API documentation 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        uses: JamesIves/github-pages-deploy-action@v4.6.0
         with:
           token: ${{ env.GITHUB_TOKEN }}
           branch: gh-pages
