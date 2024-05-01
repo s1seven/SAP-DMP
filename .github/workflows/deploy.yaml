@@ -13,7 +13,7 @@ env:
   NODE_VERSION: 20.x
   DOCS_FOLDER: docs
   DOCS_VERSION_PATH: /
-  GITHUB_TOKEN: ${{ github.token }}
+  GITHUB_TOKEN: ${{secrets.GH_PAT}}
 
 jobs:
   pages:
