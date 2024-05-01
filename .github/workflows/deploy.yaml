@@ -36,7 +36,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.5.0
         with:
           token: ${{ env.GITHUB_TOKEN }}
-          branch: github-pages
+          branch: gh-pages
           folder: ${{ env.DOCS_FOLDER }}/.vuepress/dist
           target-folder: ${{ env.DOCS_VERSION_PATH }}
           clean: true
