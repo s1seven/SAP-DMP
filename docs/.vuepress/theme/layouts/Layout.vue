@@ -33,12 +33,5 @@ export default {
     },
   },
 
-  async mounted() {
-    // enableSwaggerUI is set in api-docs/docs/.vuepress/theme/client.js
-    if (enableSwaggerUI) {
-      const module = await import('../components/OpenApi.vue');
-      this.dynamicComponent = markRaw(module.default);
-    }
-  },
 };
 </script>

@@ -17,24 +17,20 @@ async function customTheme() {
     lastUpdated: false,
     navbar: [
       { text: 'Home', link: '/' },
-      {
-        text: 'Document Information',
-        link: '/information/',
-      },
-      {
-        text: parseFloat(pkg.version) === parseFloat(supportedVersions[1].value) ? 'main' : String(API_VERSION),
-        children: supportedVersions.map((version) => ({
-          text: version.text ?? version.value,
-          link: version.text === 'main' ? '/' : `/version/${version.text}/`,
-          target: '_blank',
-        })),
-      },
     ],
     docsDir: 'docs',
     sidebar: [
       {
-        text: 'Getting Started',
-        link: '/getting-started/',
+        text: 'FAQ',
+        link: '/faq/',
+      },
+      {
+        text: 'Setup Instructions',
+        link: '/setup/',
+      },
+      {
+        text: 'User Manual',
+        link: '/manual/',
       },
     ],
   });

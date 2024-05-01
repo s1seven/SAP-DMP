@@ -1,12 +1,16 @@
 ---
 home: true
-title: S1SEVEN User Manual
-metaTitle: S1SEVEN User Manual
-description: Explore our guides and examples to integrate our platform.
+title: S1SEVEN Digital Material Passport for SAP
+metaTitle: Documentation S1SEVEN Digital Material Passport for SAP
+description: 
 heroImage: /chains.svg
 features:
-  - text: Getting Started
-    link: ./getting-started
+  - text: Frequently Asked Questions
+    link: ./faq
+  - text: Setup Instructions
+    link: ./setup
+  - text: User Manual
+    link: ./manual
 footerLinks:
   - text: S1SEVEN website
     link: https://www.s1seven.com
