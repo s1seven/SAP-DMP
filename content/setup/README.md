@@ -158,6 +158,8 @@ S1SEVEN DMP allows to configure more than one type of certificate in the system:
 1. Construct a new Mapper implementation in method `create_mapper_certificate`, which inherits from the matching super class, see below. It is intended to map all the fields based on your input (IDOC/print program/freestyle) to a certificate structure.
 1. The method `process_notarized_certificate` is called after the successful notarization. It is intended to be used for follow-up actions like "storing PDF at SAP object level".
 
+> JSON data is transmitted besides the PDF document by default. This behavior can be changed and controlled for a specific customer, see example implementations mentioned below and method `/ubc/if_s17_bo~should_omit_json( )`.
+
 #### Print program/freestyle integration
 
 In the standard delivery, we offer an integration for a print program on an outbound delivery item.
