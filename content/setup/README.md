@@ -4,31 +4,19 @@
 
 <!-- code_chunk_output -->
 
-- [Table of Content](#table-of-content)
-  - [SAP System Setup](#sap-system-setup)
-    - [System Setup with /UBC/S17\_SETUP](#system-setup-with-ubcs17_setup)
-    - [Proxy Setup with /UBC/S17\_SETUP\_PROXY](#proxy-setup-with-ubcs17_setup_proxy)
-  - [Certificate Configuration/Implementation instructions](#certificate-configurationimplementation-instructions)
-    - [Outbound case - issuing/notarizing Certificates](#outbound-case---issuingnotarizing-certificates)
-      - [Print program/freestyle integration](#print-programfreestyle-integration)
-      - [IDOC integration](#idoc-integration)
-    - [Inbound case - receiving Certificates](#inbound-case---receiving-certificates)
-  - [Connectivity](#connectivity)
-    - [Direct communication with S1SEVEN](#direct-communication-with-s1seven)
-      - [SAP to S1SEVEN API for outbound messages](#sap-to-s1seven-api-for-outbound-messages)
-      - [S1SEVEN to SAP for inbound messages](#s1seven-to-sap-for-inbound-messages)
-        - [Messages via REST webservice calls](#messages-via-rest-webservice-calls)
-        - [Messages via MQTT over Websocket](#messages-via-mqtt-over-websocket)
-    - [Indirect Communication with S1SEVEN via Middleware](#indirect-communication-with-s1seven-via-middleware)
-      - [SAP Integration Suite/Cloud Platform Integration (CPI)](#sap-integration-suitecloud-platform-integration-cpi)
-        - [Integration Package/iFlow](#integration-packageiflow)
-        - [Open Connector](#open-connector)
-          - [SAP to S1SEVEN API for outbound messages](#sap-to-s1seven-api-for-outbound-messages-1)
-          - [S1SEVEN to SAP for inbound messages](#s1seven-to-sap-for-inbound-messages-1)
-  - [Monitoring](#monitoring)
-  - [Authorization](#authorization)
-  - [Data Archiving](#data-archiving)
-  - [Compatibility](#compatibility)
+1. [SAP System Setup](#sap-system-setup)
+    1. [System Setup with /UBC/S17_SETUP](#system-setup-with-ubcs17_setup)
+    2. [Proxy Setup with /UBC/S17_SETUP_PROXY](#proxy-setup-with-ubcs17_setup_proxy)
+2. [Certificate Configuration/Implementation instructions](#certificate-configurationimplementation-instructions)
+    1. [Outbound case - issuing/notarizing Certificates](#outbound-case---issuingnotarizing-certificates)
+    2. [Inbound case - receiving Certificates](#inbound-case---receiving-certificates)
+3. [Connectivity](#connectivity)
+    1. [Direct communication with S1SEVEN](#direct-communication-with-s1seven)
+    2. [Indirect Communication with S1SEVEN via Middleware](#indirect-communication-with-s1seven-via-middleware)
+4. [Monitoring](#monitoring)
+5. [Authorization](#authorization)
+6. [Data Archiving](#data-archiving)
+7. [Compatibility](#compatibility)
 
 <!-- /code_chunk_output -->
 
@@ -158,7 +146,11 @@ S1SEVEN DMP allows to configure more than one type of certificate in the system:
 1. Construct a new Mapper implementation in method `create_mapper_certificate`, which inherits from the matching super class, see below. It is intended to map all the fields based on your input (IDOC/print program/freestyle) to a certificate structure.
 1. The method `process_notarized_certificate` is called after the successful notarization. It is intended to be used for follow-up actions like "storing PDF at SAP object level".
 
-> JSON data is transmitted besides the PDF document by default. This behavior can be changed and controlled for a specific customer, see example implementations mentioned below and method `/ubc/if_s17_bo~should_omit_json( )`.
+**Omit JSON**
+JSON data is transmitted besides the PDF document by default. This behavior can be changed and controlled for a specific customer, see example implementations mentioned below and method `/ubc/if_s17_bo~should_omit_json( )`. If you want to omit the JSON for a specific customer, redefine the mentionend method. Our best practice is to read the flag from a predefined Customizing table which needs to be filled, see the example implementations.  
+For maintaining the Attribute for a specific Customer, please have a look at `/UBC/CUSTOMIZING` -> "S1SEVEN" -> "Customer Attributes".
+![Customizing of Customers - Omit JSON](./assets/figure_49.png)
+The customizing should be pretty straightforward. Please note that empty cells for **Company id** or **Customer** can be seen as a "wildcard".
 
 #### Print program/freestyle integration
 
