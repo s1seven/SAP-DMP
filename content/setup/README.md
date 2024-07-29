@@ -4,19 +4,31 @@
 
 <!-- code_chunk_output -->
 
-1. [SAP System Setup](#sap-system-setup)
-    1. [System Setup with /UBC/S17_SETUP](#system-setup-with-ubcs17_setup)
-    2. [Proxy Setup with /UBC/S17_SETUP_PROXY](#proxy-setup-with-ubcs17_setup_proxy)
-2. [Certificate Configuration/Implementation instructions](#certificate-configurationimplementation-instructions)
-    1. [Outbound case - issuing/notarizing Certificates](#outbound-case---issuingnotarizing-certificates)
-    2. [Inbound case - receiving Certificates](#inbound-case---receiving-certificates)
-3. [Connectivity](#connectivity)
-    1. [Direct communication with S1SEVEN](#direct-communication-with-s1seven)
-    2. [Indirect Communication with S1SEVEN via Middleware](#indirect-communication-with-s1seven-via-middleware)
-4. [Monitoring](#monitoring)
-5. [Authorization](#authorization)
-6. [Data Archiving](#data-archiving)
-7. [Compatibility](#compatibility)
+- [Table of Content](#table-of-content)
+  - [SAP System Setup](#sap-system-setup)
+    - [System Setup with /UBC/S17\_SETUP](#system-setup-with-ubcs17_setup)
+    - [Proxy Setup with /UBC/S17\_SETUP\_PROXY](#proxy-setup-with-ubcs17_setup_proxy)
+  - [Certificate Configuration/Implementation instructions](#certificate-configurationimplementation-instructions)
+    - [Outbound case - issuing/notarizing Certificates](#outbound-case---issuingnotarizing-certificates)
+      - [Print program/freestyle integration](#print-programfreestyle-integration)
+      - [IDOC integration](#idoc-integration)
+    - [Inbound case - receiving Certificates](#inbound-case---receiving-certificates)
+  - [Connectivity](#connectivity)
+    - [Direct communication with S1SEVEN](#direct-communication-with-s1seven)
+      - [SAP to S1SEVEN API for outbound messages](#sap-to-s1seven-api-for-outbound-messages)
+      - [S1SEVEN to SAP for inbound messages](#s1seven-to-sap-for-inbound-messages)
+        - [Messages via REST webservice calls](#messages-via-rest-webservice-calls)
+        - [Messages via MQTT over Websocket](#messages-via-mqtt-over-websocket)
+    - [Indirect Communication with S1SEVEN via Middleware](#indirect-communication-with-s1seven-via-middleware)
+      - [SAP Integration Suite/Cloud Platform Integration (CPI)](#sap-integration-suitecloud-platform-integration-cpi)
+        - [Integration Package/iFlow](#integration-packageiflow)
+        - [Open Connector](#open-connector)
+          - [SAP to S1SEVEN API for outbound messages](#sap-to-s1seven-api-for-outbound-messages-1)
+          - [S1SEVEN to SAP for inbound messages](#s1seven-to-sap-for-inbound-messages-1)
+  - [Monitoring](#monitoring)
+  - [Authorization](#authorization)
+  - [Data Archiving](#data-archiving)
+  - [Compatibility](#compatibility)
 
 <!-- /code_chunk_output -->
 
@@ -62,6 +74,7 @@ See step documentation below for the details.
 ### Proxy Setup with /UBC/S17_SETUP_PROXY
 
 You can use this task list for newly setting up a connection to S1SEVEN or if any of the details needs to be changed. (create/update)
+You can update this task list for every company created in S1SEVEN portal.
 
 Please sign up at [S1SEVEN Platform](https://app.s1seven.com) and
 
@@ -78,10 +91,12 @@ Proceed with transaction /UBC/S17_SETUP_PROXY:
    1. Company ID
       On S1SEVEN Platform, navigate to "Automate"->"Constants" and copy "Company ID":
       ![Company ID](./assets/figure_17.png "Company ID")
-   2. Mode
+   2. Company Code
+      This is just an **informative and optional** field in order to link the S1SEVEN proxy to a SAP company code. Its an optional field to easily choose from a list of proxies by SAP company code in a custom implementation.
+   3. Mode
       Choose processing mode `live` or `test`
       [TODO](@stiebitzhofer) please add details or ref to document describing mode?
-   3. Chosse from one of the following Scenarios. Wether to connect directly or connect via Middleware (as e.g., SAP Integration Suite)
+   4. Chosse from one of the following Scenarios. Wether to connect directly or connect via Middleware (as e.g., SAP Integration Suite)
       1. Scenario Direct
          ![Configuration details Scenario Direct](./assets/figure_31.png)
          Means that SAP is connecting directly to S1SEVEN API. MQTT is used for receiving "inbound" messages (see above [Connectivity](#connectivity)).
@@ -151,6 +166,13 @@ JSON data is transmitted besides the PDF document by default. This behavior can 
 For maintaining the Attribute for a specific Customer, please have a look at `/UBC/CUSTOMIZING` -> "S1SEVEN" -> "Customer Attributes".
 ![Customizing of Customers - Omit JSON](./assets/figure_49.png)
 The customizing should be pretty straightforward. Please note that empty cells for **Company id** or **Customer** can be seen as a "wildcard".
+
+**Multiple Companies**
+If only one Company was registered in [Proxy Setup with /UBC/S17_SETUP_PROXY](#proxy-setup-with-ubcs17_setup_proxy), the addon chooses the one and only company automatically for transmitting data. If more than one company was registered, obviously any point has to define the correct company. We recommend to specify a SAP company code for the Proxy while executing the tasklist. Thats only an informative field, but a flexible way to link SAP companies to S1SEVEN company ids without any logic or configuration change after all.
+
+> If multiple Companies were registered, it is **mandatory** to add some logic to choose the proxy.
+
+In the new BO class you will create below, redefine method `choose_proxy_by_input`. It is meant to choose from a list of proxies based on given input data. Cast the generic input data to the concrete type you chose in your implementation method `create_type_input`. See `/UBC/CL_S17_BO_CERT_OUT_IDOCEX` for an example implementation to copy from.
 
 #### Print program/freestyle integration
 
