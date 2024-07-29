@@ -168,11 +168,12 @@ For maintaining the Attribute for a specific Customer, please have a look at `/U
 The customizing should be pretty straightforward. Please note that empty cells for **Company id** or **Customer** can be seen as a "wildcard".
 
 **Multiple Companies**
-If only one Company was registered in [Proxy Setup with /UBC/S17_SETUP_PROXY](#proxy-setup-with-ubcs17_setup_proxy), the addon chooses the one and only company automatically for transmitting data. If more than one company was registered, obviously any point has to define the correct company. We recommend to specify a SAP company code for the Proxy while executing the tasklist. Thats only an informative field, but a flexible way to link SAP companies to S1SEVEN company ids without any logic or configuration change after all.
+If only one Company was registered in [Proxy Setup with /UBC/S17_SETUP_PROXY](#proxy-setup-with-ubcs17_setup_proxy), the addon chooses the one and only company automatically.
+If more than one company was registered, obviously any point has to define the correct company. We recommend to link a SAP company code to the Proxy during [setup tasklist](#proxy-setup-with-ubcs17_setup_proxy). SAP Company code is only an informative field, but a flexible way to link SAP companies to S1SEVEN company ids without any logic or configuration changes after all.
 
 > If multiple Companies were registered, it is **mandatory** to add some logic to choose the proxy.
 
-In the new BO class you will create below, redefine method `choose_proxy_by_input`. It is meant to choose from a list of proxies based on given input data. Cast the generic input data to the concrete type you chose in your implementation method `create_type_input`. See `/UBC/CL_S17_BO_CERT_OUT_IDOCEX` for an example implementation to copy from.
+In the new BO class you will create below, redefine method `choose_proxy_by_input`. It is meant to choose from a list of proxies based on given input data. Cast the generic input data to the concrete type you chose in your implementation method `create_type_input`. See `/UBC/CL_S17_BO_CERT_OUT_IDOCEX` for an example implementation to copy from (its based on SAP Company code linkage, but you are free to determine that differently, e.g. Customizing/BRF+).
 
 #### Print program/freestyle integration
 
